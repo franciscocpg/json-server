@@ -7,7 +7,7 @@ ADD . /app
 
 RUN npm i --silent && \
     npm run build --silent && \
-    ln -s /app/bin/index.js /usr/bin/json-server
+    npm link
 
 WORKDIR /data
 VOLUME /data
