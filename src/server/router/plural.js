@@ -236,11 +236,25 @@ module.exports = function (db, name) {
       req.body[key] = utils.toNative(req.body[key])
     }
 
+    var idField = getIdField(req.body)
     var resource = db.get(name)
-      .insert(req.body)
-      .value()
-
-    res.status(201)
+      .find({ id: req.body[idField] })
+      .value();
+    var addId = idField !== "id";
+    var status;
+    if (resource !== undefined) {
+      status = 409
+    } else {
+      var data = req.body
+      if (addId) {
+        data.id = req.body[idField]
+      }
+      resource = db.get(name)
+        .insert(data)
+        .value()
+      status = 201
+    }
+    res.status(status)
     res.locals.data = resource
     next()
   }
@@ -284,6 +298,16 @@ module.exports = function (db, name) {
     }
 
     next()
+  }
+
+  function getIdField(data) {
+    var keys = Object.keys(data)
+
+    if (keys.indexOf("id") > -1) {
+      return "id";
+    }
+
+    return keys[0] 
   }
 
   router.route('/')
