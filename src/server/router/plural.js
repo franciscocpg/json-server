@@ -239,15 +239,15 @@ module.exports = function (db, name) {
     var idField = getIdField(req.body)
     var resource = db.get(name)
       .find({ id: req.body[idField] })
-      .value();
-    var addId = idField !== "id";
-    var status;
+      .value()
+    var addId = idField !== 'id'
+    var status
     if (resource !== undefined) {
       status = 409
     } else {
       var data = req.body
       if (addId) {
-        data.id = req.body[idField]
+        data[db._.id || 'id'] = req.body[idField]
       }
       resource = db.get(name)
         .insert(data)
@@ -300,14 +300,14 @@ module.exports = function (db, name) {
     next()
   }
 
-  function getIdField(data) {
+  function getIdField (data) {
     var keys = Object.keys(data)
 
-    if (keys.indexOf("id") > -1) {
-      return "id";
+    if (keys.indexOf(db._.id) > -1) {
+      return db._.id
     }
 
-    return keys[0] 
+    return keys[0]
   }
 
   router.route('/')

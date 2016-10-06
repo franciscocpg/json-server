@@ -3,6 +3,7 @@ triggers:
 - name: ""
   pattens:
   - '**/*.js'
+  - 'db.json'
   - '!lib/**'
   env:
     DEBUG: "1"
