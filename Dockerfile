@@ -5,7 +5,8 @@ WORKDIR /app
 
 ADD . /app
 
-RUN npm run build && \
+RUN npm i --silent && \
+    npm run build --silent && \
     ln -s /app/bin/index.js /usr/bin/json-server
 
 WORKDIR /data
