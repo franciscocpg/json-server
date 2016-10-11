@@ -8,7 +8,8 @@ WORKDIR /app
 
 ADD . /app
 
-RUN npm i --silent && \
+RUN npm i --silent -g pm2 && \
+    npm i --silent && \
     npm run build --silent && \
     npm link --silent
 
