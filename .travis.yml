@@ -1,5 +1,11 @@
-sudo: false
-language: node_js
-node_js:
-  - "stable"
-  - "0.12"
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -t franciscocpg/json-server .
+  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  
+script:
+  - docker push franciscocpg/json-server
